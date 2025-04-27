@@ -1,158 +1,157 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>State Dashboard - Rural Health App</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <title>State Dashboard - Health App</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Roboto', sans-serif;
     }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
-  <header class="bg-green-700 text-white p-4 shadow-md flex justify-between items-center">
-    <h1 class="text-2xl font-bold">State Dashboard</h1>
-    <a href="admin-login.html" class="text-green-200 hover:text-white">Logout</a>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="bg-white shadow-md">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-blue-600">Health App - State Dashboard</h1>
+      <nav>
+        <ul class="flex space-x-6 text-gray-700">
+          <li><a href="index.html" class="hover:text-blue-600 transition">Home</a></li>
+          <li><a href="health-programs-campaigns.html" class="hover:text-blue-600 transition">Programs</a></li>
+          <li><a href="notifications-and-communication.html" class="hover:text-blue-600 transition">Notifications</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <main class="flex-grow container mx-auto p-6 max-w-6xl space-y-8">
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-6 flex flex-col space-y-8">
+    <!-- News Section -->
     <section>
-      <h2 class="text-xl font-semibold mb-4 text-green-700">Overview</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-lg shadow text-center transform hover:scale-105 transition duration-300">
-          <i class="fas fa-users fa-3x text-green-600 mb-4"></i>
-          <p class="text-lg font-semibold">Districts Covered</p>
-          <p class="text-3xl font-bold">25</p>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow text-center transform hover:scale-105 transition duration-300">
-          <i class="fas fa-baby fa-3x text-green-600 mb-4"></i>
-          <p class="text-lg font-semibold">Pregnant Women Registered</p>
-          <p class="text-3xl font-bold">1,800</p>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow text-center transform hover:scale-105 transition duration-300">
-          <i class="fas fa-calendar-check fa-3x text-green-600 mb-4"></i>
-          <p class="text-lg font-semibold">Appointments This Month</p>
-          <p class="text-3xl font-bold">1,200</p>
-        </div>
-      </div>
+      <h2 class="text-xl font-semibold mb-4">Healthcare News</h2>
+      <div id="newsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </section>
 
+    <!-- Weather Section -->
     <section>
-      <h2 class="text-xl font-semibold mb-4 text-green-700">Reports & Graphs</h2>
-      <div class="bg-white p-6 rounded-lg shadow space-y-6">
-        <canvas id="lineChart" class="w-full h-64"></canvas>
-        <canvas id="barChart" class="w-full h-64"></canvas>
-        <canvas id="pieChart" class="w-full h-64"></canvas>
-      </div>
+      <h2 class="text-xl font-semibold mb-4">Weather Updates</h2>
+      <div id="weatherContainer" class="bg-white p-4 rounded shadow max-w-md"></div>
     </section>
 
+    <!-- AI Health Suggestions -->
     <section>
-      <h2 class="text-xl font-semibold mb-4 text-green-700">Management</h2>
-      <div class="bg-white p-6 rounded-lg shadow space-y-4">
-        <div>
-          <h3 class="text-lg font-semibold mb-2">Customer Support Requests</h3>
-          <ul class="list-disc list-inside text-gray-700">
-            <li>Request #1234: Follow-up call needed</li>
-            <li>Request #1235: Appointment reschedule</li>
-            <li>Request #1236: Health data update</li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="text-lg font-semibold mb-2">ASHA Worker Assignments</h3>
-          <ul class="list-disc list-inside text-gray-700">
-            <li>ASHA Worker #001: Village A</li>
-            <li>ASHA Worker #002: Village B</li>
-            <li>ASHA Worker #003: Village C</li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="text-lg font-semibold mb-2">District System Settings</h3>
-          <p class="text-gray-700">Manage district-wide settings and configurations here.</p>
-        </div>
-      </div>
+      <h2 class="text-xl font-semibold mb-4">AI Health Suggestions</h2>
+      <textarea id="healthInput" rows="3" class="w-full p-2 border rounded" placeholder="Enter your health query or symptoms..."></textarea>
+      <button id="getSuggestionsBtn" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Get Suggestions</button>
+      <div id="suggestionsOutput" class="mt-4 p-4 bg-white rounded shadow min-h-[100px]"></div>
+    </section>
+
+    <!-- Chatbot Section -->
+    <section>
+      <h2 class="text-xl font-semibold mb-4">Health Chatbot</h2>
+      <textarea id="chatInput" rows="2" class="w-full p-2 border rounded" placeholder="Ask a health-related question..."></textarea>
+      <button id="chatSendBtn" class="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Send</button>
+      <div id="chatOutput" class="mt-4 p-4 bg-white rounded shadow min-h-[100px]"></div>
     </section>
   </main>
 
-  <footer class="bg-green-700 text-white p-4 text-center">
-    &copy; 2024 Rural Health App - State Level
+  <!-- Footer -->
+  <footer class="bg-white shadow-inner py-4 mt-auto">
+    <div class="container mx-auto px-4 text-center text-gray-600">
+      &copy; 2025 Health App. All rights reserved.
+    </div>
   </footer>
 
   <script>
-    const lineCtx = document.getElementById('lineChart').getContext('2d');
-    const barCtx = document.getElementById('barChart').getContext('2d');
-    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    // Fetch and display healthcare news
+    async function fetchNews() {
+      try {
+        const response = await fetch('/news/health-news');
+        const articles = await response.json();
+        const container = document.getElementById('newsContainer');
+        container.innerHTML = '';
+        articles.forEach(article => {
+          const card = document.createElement('div');
+          card.className = 'bg-white p-4 rounded shadow';
+          card.innerHTML = `
+            <h3 class="font-semibold text-lg mb-2">${article.title}</h3>
+            <p class="text-sm text-gray-600 mb-2">${article.description || ''}</p>
+            <a href="${article.url}" target="_blank" class="text-blue-600 hover:underline">Read more</a>
+          `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error('Error fetching news:', error);
+      }
+    }
 
-    const lineChart = new Chart(lineCtx, {
-      type: 'line',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-        datasets: [{
-          label: 'Pregnant Women Registered',
-          data: [150, 180, 200, 220, 250, 270, 300],
-          borderColor: 'rgba(34,197,94,1)',
-          backgroundColor: 'rgba(34,197,94,0.2)',
-          fill: true,
-          tension: 0.3
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: 'top' },
-          title: { display: true, text: 'Monthly Pregnant Women Registration' }
-        }
+    // Fetch and display weather updates
+    async function fetchWeather() {
+      try {
+        const city = "Your Hospital City"; // Replace with actual city or dynamic value
+        const response = await fetch(`/weather/weather?city=${encodeURIComponent(city)}`);
+        const data = await response.json();
+        const container = document.getElementById('weatherContainer');
+        container.innerHTML = `
+          <h3 class="font-semibold text-lg">${data.city}</h3>
+          <p>Temperature: ${data.temperature} °C</p>
+          <p>Condition: ${data.description}</p>
+          <p>Humidity: ${data.humidity}%</p>
+          <p>Wind Speed: ${data.wind_speed} m/s</p>
+        `;
+      } catch (error) {
+        console.error('Error fetching weather:', error);
+      }
+    }
+
+    // Get AI health suggestions
+    document.getElementById('getSuggestionsBtn').addEventListener('click', async () => {
+      const input = document.getElementById('healthInput').value.trim();
+      if (!input) {
+        alert('Please enter a health query.');
+        return;
+      }
+      try {
+        const response = await fetch('/ai_health/health-suggestions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_input: input }),
+        });
+        const data = await response.json();
+        document.getElementById('suggestionsOutput').textContent = data.suggestions || 'No suggestions available.';
+      } catch (error) {
+        console.error('Error fetching health suggestions:', error);
       }
     });
 
-    const barChart = new Chart(barCtx, {
-      type: 'bar',
-      data: {
-        labels: ['District A', 'District B', 'District C', 'District D', 'District E'],
-        datasets: [{
-          label: 'ASHA Worker Visits',
-          data: [120, 140, 130, 160, 150],
-          backgroundColor: 'rgba(34,197,94,0.7)'
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: false },
-          title: { display: true, text: 'ASHA Worker Visits by District' }
-        },
-        scales: {
-          y: { beginAtZero: true }
-        }
+    // Chatbot interaction
+    document.getElementById('chatSendBtn').addEventListener('click', async () => {
+      const input = document.getElementById('chatInput').value.trim();
+      if (!input) {
+        alert('Please enter a question.');
+        return;
+      }
+      try {
+        const response = await fetch('/ai_health/chatbot', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_input: input }),
+        });
+        const data = await response.json();
+        const chatOutput = document.getElementById('chatOutput');
+        chatOutput.textContent = data.response || 'No response from chatbot.';
+      } catch (error) {
+        console.error('Error fetching chatbot response:', error);
       }
     });
 
-    const pieChart = new Chart(pieCtx, {
-      type: 'pie',
-      data: {
-        labels: ['Completed', 'Pending', 'Missed'],
-        datasets: [{
-          label: 'Appointments Status',
-          data: [100, 50, 10],
-          backgroundColor: [
-            'rgba(34,197,94,0.7)',
-            'rgba(251,191,36,0.7)',
-            'rgba(239,68,68,0.7)'
-          ]
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: 'right' },
-          title: { display: true, text: 'Appointment Status Distribution' }
-        }
-      }
-    });
+    // Initial fetches
+    fetchNews();
+    fetchWeather();
   </script>
 </body>
 </html>

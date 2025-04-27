@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inventory Management - Rural Health App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+    }
+    .expired {
+      background-color: #fee2e2;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-green-700 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Inventory Management</h1>
+    <a href="central-dashboard.html" class="text-green-200 hover:text-white">Back to Dashboard</a>
+  </header>
+
+  <main class="flex-grow container mx-auto p-6 max-w-6xl space-y-8">
+    <!-- Medicine Stock -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Medicine Stock</h2>
+      <table class="min-w-full table-auto border-collapse border border-gray-300">
+        <thead>
+          <tr class="bg-green-100">
+            <th class="border border-gray-300 px-4 py-2 text-left">Medicine Name</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Quantity</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Expiry Date</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+          </tr>
+        </thead>
+        <tbody id="medicineStock" class="text-gray-700">
+          <tr>
+            <td colspan="4" class="text-center p-4">No medicine stock data.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Medical Equipment -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Medical Equipment</h2>
+      <table class="min-w-full table-auto border-collapse border border-gray-300">
+        <thead>
+          <tr class="bg-green-100">
+            <th class="border border-gray-300 px-4 py-2 text-left">Equipment Name</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Quantity</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+          </tr>
+        </thead>
+        <tbody id="equipmentStock" class="text-gray-700">
+          <tr>
+            <td colspan="3" class="text-center p-4">No equipment data.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="bg-green-700 text-white p-4 text-center">
+    &copy; 2024 Rural Health App - Inventory Management
+  </footer>
+
+  <script>
+    const medicineStock = document.getElementById('medicineStock');
+    const equipmentStock = document.getElementById('equipmentStock');
+
+    const medicines = [
+      { name: 'Paracetamol', quantity: 100, expiry: '2024-07-15' },
+      { name: 'Amoxicillin', quantity: 50, expiry: '2023-12-01' },
+      { name: 'Ibuprofen', quantity: 0, expiry: '2023-05-01' }
+    ];
+
+    const equipment = [
+      { name: 'Stethoscope', quantity: 10 },
+      { name: 'Blood Pressure Monitor', quantity: 5 },
+      { name: 'Thermometer', quantity: 15 }
+    ];
+
+    function isExpired(dateStr) {
+      const today = new Date();
+      const expiryDate = new Date(dateStr);
+      return expiryDate < today;
+    }
+
+    function renderMedicineStock() {
+      medicineStock.innerHTML = '';
+      if (medicines.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td colspan="4" class="text-center p-4">No medicine stock data.</td>';
+        medicineStock.appendChild(tr);
+        return;
+      }
+      medicines.forEach(med => {
+        const tr = document.createElement('tr');
+        if (isExpired(med.expiry)) {
+          tr.classList.add('expired');
+        }
+        tr.innerHTML = `
+          <td class="border border-gray-300 px-4 py-2">${med.name}</td>
+          <td class="border border-gray-300 px-4 py-2">${med.quantity}</td>
+          <td class="border border-gray-300 px-4 py-2">${med.expiry}</td>
+          <td class="border border-gray-300 px-4 py-2">${isExpired(med.expiry) ? 'Expired' : 'Valid'}</td>
+        `;
+        medicineStock.appendChild(tr);
+      });
+    }
+
+    function renderEquipmentStock() {
+      equipmentStock.innerHTML = '';
+      if (equipment.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td colspan="3" class="text-center p-4">No equipment data.</td>';
+        equipmentStock.appendChild(tr);
+        return;
+      }
+      equipment.forEach(eq => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="border border-gray-300 px-4 py-2">${eq.name}</td>
+          <td class="border border-gray-300 px-4 py-2">${eq.quantity}</td>
+          <td class="border border-gray-300 px-4 py-2">Available</td>
+        `;
+        equipmentStock.appendChild(tr);
+      });
+    }
+
+    renderMedicineStock();
+    renderEquipmentStock();
+  </script>
+</body>
+</html>

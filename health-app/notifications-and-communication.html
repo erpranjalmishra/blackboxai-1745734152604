@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Notifications and Communication - Rural Health App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-green-700 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Notifications and Communication</h1>
+    <a href="central-dashboard.html" class="text-green-200 hover:text-white">Back to Dashboard</a>
+  </header>
+
+  <main class="flex-grow container mx-auto p-6 max-w-6xl space-y-8">
+    <!-- Email/SMS Notifications -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Send Notification</h2>
+      <form id="notificationForm" class="space-y-4">
+        <div>
+          <label for="recipient" class="block font-medium text-gray-700">Recipient (Email or Phone)</label>
+          <input type="text" id="recipient" name="recipient" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label for="message" class="block font-medium text-gray-700">Message</label>
+          <textarea id="message" name="message" rows="4" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50"></textarea>
+        </div>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Send</button>
+      </form>
+      <div id="notificationStatus" class="mt-4 text-green-600 font-semibold hidden"></div>
+    </section>
+
+    <!-- Internal Messaging -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Internal Messaging</h2>
+      <form id="messageForm" class="space-y-4">
+        <div>
+          <label for="staffRecipient" class="block font-medium text-gray-700">Recipient (Staff Name)</label>
+          <input type="text" id="staffRecipient" name="staffRecipient" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label for="staffMessage" class="block font-medium text-gray-700">Message</label>
+          <textarea id="staffMessage" name="staffMessage" rows="4" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50"></textarea>
+        </div>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Send Message</button>
+      </form>
+      <div id="messageStatus" class="mt-4 text-green-600 font-semibold hidden"></div>
+    </section>
+  </main>
+
+  <footer class="bg-green-700 text-white p-4 text-center">
+    &copy; 2024 Rural Health App - Notifications and Communication
+  </footer>
+
+  <script>
+    const notificationForm = document.getElementById('notificationForm');
+    const notificationStatus = document.getElementById('notificationStatus');
+    const messageForm = document.getElementById('messageForm');
+    const messageStatus = document.getElementById('messageStatus');
+
+    notificationForm.addEventListener('submit', e => {
+      e.preventDefault();
+      // Simulate sending notification
+      notificationStatus.textContent = 'Notification sent successfully.';
+      notificationStatus.classList.remove('hidden');
+      notificationForm.reset();
+      setTimeout(() => notificationStatus.classList.add('hidden'), 3000);
+    });
+
+    messageForm.addEventListener('submit', e => {
+      e.preventDefault();
+      // Simulate sending internal message
+      messageStatus.textContent = 'Message sent successfully.';
+      messageStatus.classList.remove('hidden');
+      messageForm.reset();
+      setTimeout(() => messageStatus.classList.add('hidden'), 3000);
+    });
+  </script>
+</body>
+</html>

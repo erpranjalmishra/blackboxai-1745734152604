@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emergency Alert System - Rural Health App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+    }
+    .priority-high {
+      background-color: #fee2e2;
+    }
+    .priority-medium {
+      background-color: #fef3c7;
+    }
+    .priority-low {
+      background-color: #d1fae5;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-green-700 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Emergency Alert System</h1>
+    <a href="central-dashboard.html" class="text-green-200 hover:text-white">Back to Dashboard</a>
+  </header>
+
+  <main class="flex-grow container mx-auto p-6 max-w-6xl space-y-8">
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Real-time Emergency Alerts</h2>
+      <ul id="emergencyAlerts" class="max-h-64 overflow-y-auto space-y-2 text-gray-700">
+        <li>No emergency alerts at this time.</li>
+      </ul>
+    </section>
+
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Priority Case Tracking</h2>
+      <table class="min-w-full table-auto border-collapse border border-gray-300">
+        <thead>
+          <tr class="bg-green-100">
+            <th class="border border-gray-300 px-4 py-2 text-left">Patient Name</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Priority</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="priorityCases" class="text-gray-700">
+          <tr>
+            <td colspan="4" class="text-center p-4">No priority cases.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="bg-green-700 text-white p-4 text-center">
+    &copy; 2024 Rural Health App - Emergency Alert System
+  </footer>
+
+  <script>
+    const emergencyAlerts = document.getElementById('emergencyAlerts');
+    const priorityCases = document.getElementById('priorityCases');
+
+    const alerts = [
+      { message: 'Patient John Doe requires immediate attention!', priority: 'high' },
+      { message: 'Patient Jane Roe condition worsening.', priority: 'medium' }
+    ];
+
+    const cases = [
+      { name: 'John Doe', priority: 'high', status: 'In Treatment' },
+      { name: 'Jane Roe', priority: 'medium', status: 'Under Observation' }
+    ];
+
+    function renderAlerts() {
+      emergencyAlerts.innerHTML = '';
+      if (alerts.length === 0) {
+        emergencyAlerts.innerHTML = '<li>No emergency alerts at this time.</li>';
+        return;
+      }
+      alerts.forEach(alert => {
+        const li = document.createElement('li');
+        li.textContent = alert.message;
+        li.classList.add('p-2', 'rounded');
+        if (alert.priority === 'high') li.classList.add('priority-high');
+        else if (alert.priority === 'medium') li.classList.add('priority-medium');
+        else li.classList.add('priority-low');
+        emergencyAlerts.appendChild(li);
+      });
+    }
+
+    function renderCases() {
+      priorityCases.innerHTML = '';
+      if (cases.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td colspan="4" class="text-center p-4">No priority cases.</td>';
+        priorityCases.appendChild(tr);
+        return;
+      }
+      cases.forEach((c, index) => {
+        const tr = document.createElement('tr');
+        tr.classList.add('border', 'border-gray-300');
+        if (c.priority === 'high') tr.classList.add('priority-high');
+        else if (c.priority === 'medium') tr.classList.add('priority-medium');
+        else tr.classList.add('priority-low');
+        tr.innerHTML = `
+          <td class="border border-gray-300 px-4 py-2">${c.name}</td>
+          <td class="border border-gray-300 px-4 py-2">${c.priority.charAt(0).toUpperCase() + c.priority.slice(1)}</td>
+          <td class="border border-gray-300 px-4 py-2">${c.status}</td>
+          <td class="border border-gray-300 px-4 py-2">
+            <button data-index="${index}" class="resolveBtn bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700 transition">Resolve</button>
+          </td>
+        `;
+        priorityCases.appendChild(tr);
+      });
+
+      document.querySelectorAll('.resolveBtn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const idx = e.target.getAttribute('data-index');
+          if (confirm('Mark this case as resolved?')) {
+            cases.splice(idx, 1);
+            renderCases();
+          }
+        });
+      });
+    }
+
+    renderAlerts();
+    renderCases();
+  </script>
+</body>
+</html>

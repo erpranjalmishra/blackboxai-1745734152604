@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reports and Analytics - Rural Health App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-green-700 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Reports and Analytics</h1>
+    <a href="central-dashboard.html" class="text-green-200 hover:text-white">Back to Dashboard</a>
+  </header>
+
+  <main class="flex-grow container mx-auto p-6 max-w-6xl space-y-8">
+    <!-- Patient Growth Trends -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Patient Growth Trends</h2>
+      <canvas id="patientGrowthChart" class="w-full h-64"></canvas>
+    </section>
+
+    <!-- Disease Trend Analysis -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Disease Trend Analysis</h2>
+      <canvas id="diseaseTrendChart" class="w-full h-64"></canvas>
+    </section>
+
+    <!-- Doctor Performance Reports -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Doctor Performance Reports</h2>
+      <canvas id="doctorPerformanceChart" class="w-full h-64"></canvas>
+    </section>
+
+    <!-- Financial Summaries -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Financial Summaries</h2>
+      <canvas id="financialSummaryChart" class="w-full h-64"></canvas>
+    </section>
+  </main>
+
+  <footer class="bg-green-700 text-white p-4 text-center">
+    &copy; 2024 Rural Health App - Reports and Analytics
+  </footer>
+
+  <script>
+    const patientGrowthCtx = document.getElementById('patientGrowthChart').getContext('2d');
+    const diseaseTrendCtx = document.getElementById('diseaseTrendChart').getContext('2d');
+    const doctorPerformanceCtx = document.getElementById('doctorPerformanceChart').getContext('2d');
+    const financialSummaryCtx = document.getElementById('financialSummaryChart').getContext('2d');
+
+    const patientGrowthChart = new Chart(patientGrowthCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [{
+          label: 'New Patients',
+          data: [50, 75, 100, 125, 150, 175, 200],
+          borderColor: 'rgba(34,197,94,1)',
+          backgroundColor: 'rgba(34,197,94,0.2)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'top' },
+          title: { display: true, text: 'Patient Growth Over Time' }
+        }
+      }
+    });
+
+    const diseaseTrendChart = new Chart(diseaseTrendCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Flu', 'Diabetes', 'Hypertension', 'Asthma', 'COVID-19'],
+        datasets: [{
+          label: 'Cases',
+          data: [120, 90, 75, 60, 45],
+          backgroundColor: 'rgba(251,191,36,0.7)'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: 'Disease Cases Trend' }
+        },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+
+    const doctorPerformanceChart = new Chart(doctorPerformanceCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Dr. Smith', 'Dr. Adams', 'Dr. Brown', 'Dr. Lee', 'Dr. Patel'],
+        datasets: [{
+          label: 'Patient Satisfaction',
+          data: [85, 75, 90, 80, 70],
+          backgroundColor: [
+            'rgba(34,197,94,0.7)',
+            'rgba(59,130,246,0.7)',
+            'rgba(251,191,36,0.7)',
+            'rgba(239,68,68,0.7)',
+            'rgba(168,85,247,0.7)'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'right' },
+          title: { display: true, text: 'Doctor Performance Ratings' }
+        }
+      }
+    });
+
+    const financialSummaryChart = new Chart(financialSummaryCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [{
+          label: 'Revenue (USD)',
+          data: [5000, 7000, 8000, 7500, 9000, 9500, 10000],
+          borderColor: 'rgba(59,130,246,1)',
+          backgroundColor: 'rgba(59,130,246,0.2)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'top' },
+          title: { display: true, text: 'Financial Revenue Over Time' }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Doctor Management - Rural Health App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-green-700 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Doctor Management</h1>
+    <a href="central-dashboard.html" class="text-green-200 hover:text-white">Back to Dashboard</a>
+  </header>
+
+  <main class="flex-grow container mx-auto p-6 max-w-6xl space-y-8">
+    <!-- Add/Edit Doctor Form -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Add / Edit Doctor Profile</h2>
+      <form id="doctorForm" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="doctorName" class="block font-medium text-gray-700">Full Name</label>
+            <input type="text" id="doctorName" name="doctorName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+          </div>
+          <div>
+            <label for="doctorSpecialization" class="block font-medium text-gray-700">Specialization</label>
+            <input type="text" id="doctorSpecialization" name="doctorSpecialization" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+          </div>
+          <div>
+            <label for="doctorAvailability" class="block font-medium text-gray-700">Availability</label>
+            <select id="doctorAvailability" name="doctorAvailability" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50">
+              <option value="">Select Availability</option>
+              <option value="full-time">Full-time</option>
+              <option value="part-time">Part-time</option>
+              <option value="on-call">On-call</option>
+            </select>
+          </div>
+          <div>
+            <label for="doctorSchedule" class="block font-medium text-gray-700">Schedule</label>
+            <input type="text" id="doctorSchedule" name="doctorSchedule" placeholder="e.g. Mon-Fri 9am-5pm" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+          </div>
+        </div>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Save Doctor</button>
+      </form>
+    </section>
+
+    <!-- Doctor Profiles List -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Doctor Profiles</h2>
+      <table class="min-w-full table-auto border-collapse border border-gray-300">
+        <thead>
+          <tr class="bg-green-100">
+            <th class="border border-gray-300 px-4 py-2 text-left">Name</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Specialization</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Availability</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Schedule</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Rating</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="doctorList" class="text-gray-700">
+          <tr>
+            <td colspan="6" class="text-center p-4">No doctors found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="bg-green-700 text-white p-4 text-center">
+    &copy; 2024 Rural Health App - Doctor Management
+  </footer>
+
+  <script>
+    const doctorForm = document.getElementById('doctorForm');
+    const doctorList = document.getElementById('doctorList');
+
+    let doctors = [];
+
+    function renderDoctors() {
+      doctorList.innerHTML = '';
+      if (doctors.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td colspan="6" class="text-center p-4">No doctors found.</td>';
+        doctorList.appendChild(tr);
+        return;
+      }
+      doctors.forEach((doctor, index) => {
+        const tr = document.createElement('tr');
+        tr.classList.add('border', 'border-gray-300');
+        tr.innerHTML = `
+          <td class="border border-gray-300 px-4 py-2">${doctor.name}</td>
+          <td class="border border-gray-300 px-4 py-2">${doctor.specialization}</td>
+          <td class="border border-gray-300 px-4 py-2">${doctor.availability}</td>
+          <td class="border border-gray-300 px-4 py-2">${doctor.schedule}</td>
+          <td class="border border-gray-300 px-4 py-2">${doctor.rating || 'N/A'}</td>
+          <td class="border border-gray-300 px-4 py-2 space-x-2">
+            <button data-index="${index}" class="editBtn text-blue-600 hover:underline">Edit</button>
+            <button data-index="${index}" class="deleteBtn text-red-600 hover:underline">Remove</button>
+          </td>
+        `;
+        doctorList.appendChild(tr);
+      });
+
+      // Attach event listeners for edit and delete buttons
+      document.querySelectorAll('.editBtn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = e.target.getAttribute('data-index');
+          const doctor = doctors[idx];
+          doctorForm.doctorName.value = doctor.name;
+          doctorForm.doctorSpecialization.value = doctor.specialization;
+          doctorForm.doctorAvailability.value = doctor.availability;
+          doctorForm.doctorSchedule.value = doctor.schedule;
+          // Scroll to form
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          // Remove doctor from list temporarily for editing
+          doctors.splice(idx, 1);
+          renderDoctors();
+        });
+      });
+
+      document.querySelectorAll('.deleteBtn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = e.target.getAttribute('data-index');
+          if (confirm('Are you sure you want to remove this doctor?')) {
+            doctors.splice(idx, 1);
+            renderDoctors();
+          }
+        });
+      });
+    }
+
+    doctorForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const newDoctor = {
+        name: doctorForm.doctorName.value.trim(),
+        specialization: doctorForm.doctorSpecialization.value.trim(),
+        availability: doctorForm.doctorAvailability.value,
+        schedule: doctorForm.doctorSchedule.value.trim(),
+        rating: null
+      };
+      doctors.push(newDoctor);
+      renderDoctors();
+      doctorForm.reset();
+    });
+
+    renderDoctors();
+  </script>
+</body>
+</html>

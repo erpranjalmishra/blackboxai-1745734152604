@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Health Programs & Campaigns - Rural Health App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-green-700 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Health Programs & Campaigns</h1>
+    <a href="central-dashboard.html" class="text-green-200 hover:text-white">Back to Dashboard</a>
+  </header>
+
+  <main class="flex-grow container mx-auto p-6 max-w-6xl space-y-8">
+    <!-- Vaccination Drives -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Vaccination Drives</h2>
+      <ul id="vaccinationDrives" class="list-disc list-inside text-gray-700 space-y-2">
+        <li>COVID-19 Vaccination Drive - June 15, 2024</li>
+        <li>Polio Vaccination Campaign - July 10, 2024</li>
+      </ul>
+    </section>
+
+    <!-- Wellness Programs -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Wellness Programs</h2>
+      <ul id="wellnessPrograms" class="list-disc list-inside text-gray-700 space-y-2">
+        <li>Diabetes Awareness Workshop - June 20, 2024</li>
+        <li>Heart Health Screening - July 5, 2024</li>
+      </ul>
+    </section>
+
+    <!-- Event Management -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Event Management</h2>
+      <form id="eventForm" class="space-y-4">
+        <div>
+          <label for="eventName" class="block font-medium text-gray-700">Event Name</label>
+          <input type="text" id="eventName" name="eventName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label for="eventDate" class="block font-medium text-gray-700">Event Date</label>
+          <input type="date" id="eventDate" name="eventDate" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Add Event</button>
+      </form>
+      <ul id="eventList" class="mt-6 list-disc list-inside text-gray-700 space-y-2"></ul>
+    </section>
+  </main>
+
+  <footer class="bg-green-700 text-white p-4 text-center">
+    &copy; 2024 Rural Health App - Health Programs & Campaigns
+  </footer>
+
+  <script>
+    const eventForm = document.getElementById('eventForm');
+    const eventList = document.getElementById('eventList');
+
+    eventForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const name = eventForm.eventName.value.trim();
+      const date = eventForm.eventDate.value;
+      if (name && date) {
+        const li = document.createElement('li');
+        li.textContent = `${name} - ${date}`;
+        eventList.appendChild(li);
+        eventForm.reset();
+      }
+    });
+  </script>
+</body>
+</html>

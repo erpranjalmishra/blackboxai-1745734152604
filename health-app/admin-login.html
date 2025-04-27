@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Login - Rural Health App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-6 text-green-700 text-center">Admin Login</h1>
+    <form id="adminLoginForm" class="space-y-4">
+      <div>
+        <label for="adminId" class="block font-medium text-gray-700">Admin ID</label>
+        <input type="text" id="adminId" name="adminId" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+      </div>
+      <div>
+        <label for="password" class="block font-medium text-gray-700">Password</label>
+        <input type="password" id="password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+      </div>
+      <div>
+        <label for="role" class="block font-medium text-gray-700">Role</label>
+        <select id="role" name="role" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50">
+          <option value="">Select Role</option>
+          <option value="central">Central</option>
+          <option value="state">State</option>
+          <option value="district">District</option>
+          <option value="village">Village</option>
+        </select>
+      </div>
+      <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition w-full">Login</button>
+    </form>
+    <p class="mt-4 text-center">
+      <a href="password-reset.html" class="text-green-600 hover:underline">Forgot Password?</a>
+    </p>
+    <div id="loginMessage" class="mt-4 text-red-600 font-semibold hidden"></div>
+  </div>
+
+  <script>
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const loginMessage = document.getElementById('loginMessage');
+
+    adminLoginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const adminId = adminLoginForm.adminId.value.trim();
+      const password = adminLoginForm.password.value.trim();
+      const role = adminLoginForm.role.value;
+
+      // Dummy validation and redirection simulation
+      if (adminId && password && role) {
+        loginMessage.classList.add('hidden');
+        // Redirect based on role
+        switch(role) {
+          case 'central':
+            window.location.href = 'central-dashboard.html';
+            break;
+          case 'state':
+            window.location.href = 'state-dashboard.html';
+            break;
+          case 'district':
+            window.location.href = 'district-dashboard.html';
+            break;
+          case 'village':
+            window.location.href = 'village-dashboard.html';
+            break;
+          default:
+            loginMessage.textContent = 'Invalid role selected.';
+            loginMessage.classList.remove('hidden');
+        }
+      } else {
+        loginMessage.textContent = 'Please fill all fields.';
+        loginMessage.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

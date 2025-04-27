@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Medical Records - Rural Health App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-green-700 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Medical Records</h1>
+    <a href="central-dashboard.html" class="text-green-200 hover:text-white">Back to Dashboard</a>
+  </header>
+
+  <main class="flex-grow container mx-auto p-6 max-w-6xl space-y-8">
+    <!-- Upload Medical Records -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Upload Medical Records</h2>
+      <form id="uploadForm" class="space-y-4">
+        <div>
+          <label for="patientName" class="block font-medium text-gray-700">Patient Name</label>
+          <input type="text" id="patientName" name="patientName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label for="doctorName" class="block font-medium text-gray-700">Doctor Name</label>
+          <input type="text" id="doctorName" name="doctorName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label for="recordDate" class="block font-medium text-gray-700">Date</label>
+          <input type="date" id="recordDate" name="recordDate" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label for="recordType" class="block font-medium text-gray-700">Record Type</label>
+          <select id="recordType" name="recordType" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50">
+            <option value="">Select Type</option>
+            <option value="prescription">Prescription</option>
+            <option value="lab-result">Lab Result</option>
+            <option value="imaging">Imaging</option>
+          </select>
+        </div>
+        <div>
+          <label for="fileUpload" class="block font-medium text-gray-700">Upload File (PDF, Image)</label>
+          <input type="file" id="fileUpload" name="fileUpload" accept=".pdf,image/*" required class="mt-1 block w-full" />
+        </div>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Upload Record</button>
+      </form>
+    </section>
+
+    <!-- Search Medical Records -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Search Medical Records</h2>
+      <form id="searchForm" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label for="searchPatient" class="block font-medium text-gray-700">Patient Name</label>
+            <input type="text" id="searchPatient" name="searchPatient" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+          </div>
+          <div>
+            <label for="searchDoctor" class="block font-medium text-gray-700">Doctor Name</label>
+            <input type="text" id="searchDoctor" name="searchDoctor" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+          </div>
+          <div>
+            <label for="searchDate" class="block font-medium text-gray-700">Date</label>
+            <input type="date" id="searchDate" name="searchDate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+          </div>
+        </div>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Search</button>
+      </form>
+      <div id="searchResults" class="mt-6 max-h-64 overflow-y-auto"></div>
+    </section>
+  </main>
+
+  <footer class="bg-green-700 text-white p-4 text-center">
+    &copy; 2024 Rural Health App - Medical Records
+  </footer>
+
+  <script>
+    const uploadForm = document.getElementById('uploadForm');
+    const searchForm = document.getElementById('searchForm');
+    const searchResults = document.getElementById('searchResults');
+
+    let medicalRecords = [];
+
+    uploadForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const newRecord = {
+        patientName: uploadForm.patientName.value.trim(),
+        doctorName: uploadForm.doctorName.value.trim(),
+        date: uploadForm.recordDate.value,
+        type: uploadForm.recordType.value,
+        fileName: uploadForm.fileUpload.files[0]?.name || 'No file'
+      };
+      medicalRecords.push(newRecord);
+      alert('Medical record uploaded successfully.');
+      uploadForm.reset();
+    });
+
+    searchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const patient = searchForm.searchPatient.value.trim().toLowerCase();
+      const doctor = searchForm.searchDoctor.value.trim().toLowerCase();
+      const date = searchForm.searchDate.value;
+
+      const filtered = medicalRecords.filter(record => {
+        return (!patient || record.patientName.toLowerCase().includes(patient)) &&
+               (!doctor || record.doctorName.toLowerCase().includes(doctor)) &&
+               (!date || record.date === date);
+      });
+
+      if (filtered.length === 0) {
+        searchResults.innerHTML = '<p class="text-gray-700">No records found.</p>';
+        return;
+      }
+
+      let html = '<ul class="list-disc list-inside text-gray-700">';
+      filtered.forEach(rec => {
+        html += `<li><strong>${rec.type}</strong> for <em>${rec.patientName}</em> by Dr. ${rec.doctorName} on ${rec.date} - File: ${rec.fileName}</li>`;
+      });
+      html += '</ul>';
+      searchResults.innerHTML = html;
+    });
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Unified Login - Health App</title>
+  <title>Unified Login & Registration - Health App</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
@@ -21,8 +21,9 @@
       <nav>
         <ul class="flex space-x-6 text-gray-700">
           <li><a href="index.html" class="hover:text-blue-600 transition">Home</a></li>
-          <li><a href="health-programs-campaigns.html" class="hover:text-blue-600 transition">Programs</a></li>
-          <li><a href="contact.html" class="hover:text-blue-600 transition">Contact</a></li>
+          <li><a href="state-dashboard.html" class="hover:text-blue-600 transition">State Dashboard</a></li>
+          <li><a href="district-dashboard.html" class="hover:text-blue-600 transition">District Dashboard</a></li>
+          <li><a href="village-dashboard.html" class="hover:text-blue-600 transition">Village Dashboard</a></li>
         </ul>
       </nav>
     </div>
@@ -31,13 +32,13 @@
   <!-- Main Content -->
   <main class="flex-grow flex items-center justify-center">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-      <h2 class="text-3xl font-semibold mb-6 text-center text-gray-800">Login to Your Account</h2>
-      <form id="loginForm" class="space-y-6">
+      <h2 class="text-3xl font-semibold mb-6 text-center text-gray-800">Login or Register</h2>
+      <form id="authForm" class="space-y-6">
         <div>
           <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
           <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
-        <div>
+        <div id="passwordDiv">
           <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
           <input type="password" id="password" name="password" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
@@ -45,12 +46,15 @@
           <input type="checkbox" id="useOtp" name="useOtp" />
           <label for="useOtp" class="text-gray-700">Login with OTP</label>
         </div>
-        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition">Login</button>
+        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition" id="submitBtn">Login</button>
       </form>
       <div id="otpSection" class="hidden mt-4">
         <button id="sendOtpBtn" class="w-full bg-green-600 text-white py-3 rounded-md font-semibold hover:bg-green-700 transition">Send OTP</button>
         <input type="text" id="otpInput" placeholder="Enter OTP" class="w-full mt-3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
         <button id="verifyOtpBtn" class="w-full bg-green-600 text-white py-3 rounded-md font-semibold hover:bg-green-700 transition mt-2">Verify OTP</button>
+      </div>
+      <div class="mt-6 text-center">
+        <p>Don't have an account? <button id="toggleRegister" class="text-blue-600 hover:underline">Register here</button></p>
       </div>
     </div>
   </main>
@@ -65,23 +69,37 @@
   <script>
     const useOtpCheckbox = document.getElementById('useOtp');
     const otpSection = document.getElementById('otpSection');
-    const loginForm = document.getElementById('loginForm');
+    const authForm = document.getElementById('authForm');
     const sendOtpBtn = document.getElementById('sendOtpBtn');
     const verifyOtpBtn = document.getElementById('verifyOtpBtn');
     const otpInput = document.getElementById('otpInput');
+    const toggleRegisterBtn = document.getElementById('toggleRegister');
+    const submitBtn = document.getElementById('submitBtn');
+    const passwordDiv = document.getElementById('passwordDiv');
+
+    let isRegister = false;
 
     useOtpCheckbox.addEventListener('change', () => {
       if (useOtpCheckbox.checked) {
         otpSection.classList.remove('hidden');
-        loginForm.querySelector('input[name="password"]').disabled = true;
+        passwordDiv.style.display = 'none';
       } else {
         otpSection.classList.add('hidden');
-        loginForm.querySelector('input[name="password"]').disabled = false;
+        passwordDiv.style.display = 'block';
+      }
+    });
+
+    toggleRegisterBtn.addEventListener('click', () => {
+      isRegister = !isRegister;
+      if (isRegister) {
+        submitBtn.textContent = 'Register';
+      } else {
+        submitBtn.textContent = 'Login';
       }
     });
 
     sendOtpBtn.addEventListener('click', async () => {
-      const email = loginForm.email.value;
+      const email = authForm.email.value;
       if (!email) {
         alert('Please enter your email to receive OTP.');
         return;
@@ -100,7 +118,7 @@
     });
 
     verifyOtpBtn.addEventListener('click', async () => {
-      const email = loginForm.email.value;
+      const email = authForm.email.value;
       const otp = otpInput.value;
       if (!email || !otp) {
         alert('Please enter both email and OTP.');
@@ -124,29 +142,47 @@
       }
     });
 
-    loginForm.addEventListener('submit', async (e) => {
+    authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const email = authForm.email.value;
       if (useOtpCheckbox.checked) {
         alert('Please use OTP login section to login.');
         return;
       }
-      const email = loginForm.email.value;
-      const password = loginForm.password.value;
+      const password = authForm.password.value;
       try {
-        const response = await fetch('/users/token', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({ username: email, password }),
-        });
-        const data = await response.json();
-        if (data.access_token) {
-          alert('Login successful!');
-          // Save token and redirect or update UI accordingly
+        if (isRegister) {
+          // Register user
+          const response = await fetch('/users/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          });
+          const data = await response.json();
+          if (response.ok) {
+            alert('Registration successful! Please login.');
+            isRegister = false;
+            submitBtn.textContent = 'Login';
+          } else {
+            alert(data.detail || 'Registration failed.');
+          }
         } else {
-          alert('Invalid credentials.');
+          // Login user
+          const response = await fetch('/users/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ username: email, password }),
+          });
+          const data = await response.json();
+          if (data.access_token) {
+            alert('Login successful!');
+            // Save token and redirect or update UI accordingly
+          } else {
+            alert('Invalid credentials.');
+          }
         }
       } catch (error) {
-        alert('Login failed. Please try again.');
+        alert('Authentication failed. Please try again.');
       }
     });
   </script>

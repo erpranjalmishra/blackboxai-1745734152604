@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rural Health App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-green-600 text-white p-4 shadow-md">
+    <h1 class="text-2xl font-bold text-center">Rural Health App</h1>
+  </header>
+
+  <main class="flex-grow container mx-auto p-4 max-w-4xl">
+    <nav class="mb-8 flex justify-center space-x-8">
+      <button id="btnPregnant" class="text-green-700 font-semibold hover:text-green-900 focus:outline-none focus:ring-2 focus:ring-green-600">Pregnant Lady Tracker</button>
+      <button id="btnAsha" class="text-green-700 font-semibold hover:text-green-900 focus:outline-none focus:ring-2 focus:ring-green-600">ASHA Worker Login</button>
+    </nav>
+
+    <section id="pregnantTracker" class="hidden bg-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Pregnant Lady Health Tracker</h2>
+      <form id="healthForm" class="space-y-4">
+        <div>
+          <label for="name" class="block font-medium text-gray-700">Name</label>
+          <input type="text" id="name" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label for="age" class="block font-medium text-gray-700">Age</label>
+          <input type="number" id="age" name="age" min="10" max="50" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label for="weeksPregnant" class="block font-medium text-gray-700">Weeks Pregnant</label>
+          <input type="number" id="weeksPregnant" name="weeksPregnant" min="1" max="42" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label for="weight" class="block font-medium text-gray-700">Weight (kg)</label>
+          <input type="number" id="weight" name="weight" min="20" max="150" step="0.1" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label for="bloodPressure" class="block font-medium text-gray-700">Blood Pressure (mmHg)</label>
+          <input type="text" id="bloodPressure" name="bloodPressure" placeholder="e.g. 120/80" pattern="^\d{2,3}\/\d{2,3}$" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Save Health Data</button>
+      </form>
+      <div id="healthDataDisplay" class="mt-6 hidden bg-green-50 p-4 rounded border border-green-200">
+        <h3 class="font-semibold text-green-800 mb-2">Saved Health Data</h3>
+        <pre class="whitespace-pre-wrap text-green-900"></pre>
+      </div>
+    </section>
+
+    <section id="ashaLogin" class="hidden bg-white rounded-lg shadow p-6 max-w-md mx-auto">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">ASHA Worker Login</h2>
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label for="ashaId" class="block font-medium text-gray-700">ASHA Worker ID</label>
+          <input type="text" id="ashaId" name="ashaId" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label for="password" class="block font-medium text-gray-700">Password</label>
+          <input type="password" id="password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+        </div>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Login</button>
+      </form>
+      <div id="loginMessage" class="mt-4 text-red-600 font-semibold hidden"></div>
+    </section>
+  </main>
+
+  <footer class="bg-green-600 text-white p-4 text-center">
+    &copy; 2024 Rural Health App
+  </footer>
+
+  <script>
+    const btnPregnant = document.getElementById('btnPregnant');
+    const btnAsha = document.getElementById('btnAsha');
+    const pregnantTracker = document.getElementById('pregnantTracker');
+    const ashaLogin = document.getElementById('ashaLogin');
+    const healthForm = document.getElementById('healthForm');
+    const healthDataDisplay = document.getElementById('healthDataDisplay');
+    const healthDataPre = healthDataDisplay.querySelector('pre');
+    const loginForm = document.getElementById('loginForm');
+    const loginMessage = document.getElementById('loginMessage');
+
+    function showSection(section) {
+      pregnantTracker.classList.add('hidden');
+      ashaLogin.classList.add('hidden');
+      section.classList.remove('hidden');
+      loginMessage.classList.add('hidden');
+    }
+
+    btnPregnant.addEventListener('click', () => showSection(pregnantTracker));
+    btnAsha.addEventListener('click', () => showSection(ashaLogin));
+
+    healthForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const formData = new FormData(healthForm);
+      const data = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+      healthDataPre.textContent = JSON.stringify(data, null, 2);
+      healthDataDisplay.classList.remove('hidden');
+      healthForm.reset();
+    });
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const ashaId = loginForm.ashaId.value.trim();
+      const password = loginForm.password.value.trim();
+      // Simple dummy validation for demonstration
+      if (ashaId === 'asha123' && password === 'password') {
+        loginMessage.textContent = 'Login successful!';
+        loginMessage.classList.remove('hidden', 'text-red-600');
+        loginMessage.classList.add('text-green-600');
+        loginForm.reset();
+      } else {
+        loginMessage.textContent = 'Invalid ASHA Worker ID or password.';
+        loginMessage.classList.remove('hidden', 'text-green-600');
+        loginMessage.classList.add('text-red-600');
+      }
+    });
+
+    // Show Pregnant Lady Tracker by default on page load
+    showSection(pregnantTracker);
+  </script>
+</body>
+</html>

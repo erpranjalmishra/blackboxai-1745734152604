@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Central Dashboard - Rural Health App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-green-700 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Central Dashboard</h1>
+    <a href="admin-login.html" class="text-green-200 hover:text-white">Logout</a>
+  </header>
+
+  <main class="flex-grow container mx-auto p-6 max-w-6xl">
+    <section class="mb-8">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Overview</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-white p-4 rounded shadow text-center">
+          <i class="fas fa-users fa-2x text-green-600 mb-2"></i>
+          <p class="text-lg font-semibold">Total ASHA Workers</p>
+          <p class="text-2xl font-bold">1,200</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow text-center">
+          <i class="fas fa-baby fa-2x text-green-600 mb-2"></i>
+          <p class="text-lg font-semibold">Pregnant Women Registered</p>
+          <p class="text-2xl font-bold">3,450</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow text-center">
+          <i class="fas fa-calendar-check fa-2x text-green-600 mb-2"></i>
+          <p class="text-lg font-semibold">Appointments Today</p>
+          <p class="text-2xl font-bold">150</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow text-center">
+          <i class="fas fa-chart-line fa-2x text-green-600 mb-2"></i>
+          <p class="text-lg font-semibold">Monthly Progress</p>
+          <p class="text-2xl font-bold">+12%</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Reports</h2>
+      <div class="bg-white p-4 rounded shadow">
+        <p>Daily, monthly, and yearly reports will be displayed here.</p>
+        <ul class="list-disc list-inside mt-2 text-gray-700">
+          <li>Daily health tracking summary</li>
+          <li>Monthly ASHA worker performance</li>
+          <li>Yearly health trends</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mb-4 text-green-700">Management</h2>
+      <div class="bg-white p-4 rounded shadow">
+        <p>Manage customers, ASHA support, and other administrative tasks here.</p>
+        <ul class="list-disc list-inside mt-2 text-gray-700">
+          <li>Customer support requests</li>
+          <li>ASHA worker assignments</li>
+          <li>System settings and configurations</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-green-700 text-white p-4 text-center">
+    &copy; 2024 Rural Health App - Central Level
+  </footer>
+</body>
+</html>

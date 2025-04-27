@@ -27,4 +27,3 @@ def read_patient(patient_id: int, db: Session = Depends(get_db), current_user: m
     if db_patient is None:
         raise HTTPException(status_code=404, detail="Patient not found")
     return db_patient
-</create_file>
